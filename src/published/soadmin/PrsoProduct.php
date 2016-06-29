@@ -1,38 +1,52 @@
 <?php
+use Alexspi\Spares\Model\PrsoProduct;
+use Alexspi\Spares\Model\PrsoCategory;
+use SleepingOwl\Admin\Model\ModelConfiguration;
 
-Admin::model('Alexspi\Spares\Model\PrsoProduct')->title('Товары')->display(function ()
+AdminSection::registerModel(PrsoProduct::class, function (ModelConfiguration $model)
 {
-    $display = AdminDisplay::datatables();
-    $display->with();
-    $display->filters([
+    $model->setTitle('Запчасти');
+    $model->setAlias('spares/product');
 
-    ]);
-    $display->columns([
-        Column::string('name')->label('Товар'),
-        Column::string('id')->label('Id'),
-        Column::string('show')->label('Включен'),
-        Column::string('views')->label('Просмотры'),
-        Column::datetime('created_at')->label('Создан')->format('d.m.Y'),
-    ]);
-    return $display;
-})->createAndEdit(function ()
-{
-    $form = AdminForm::form();
-    $form->items([
-//		AdminFormElement::text('category_id', 'Category'),
-        AdminFormElement::text('name', 'Товар')->required(),
-        AdminFormElement::text('cost', 'Цена'),
-        AdminFormElement::text('slug', 'Ярлык (если не заполнять генерируется автоматически)'),
-        AdminFormElement::text('status', 'Статус'),
-        AdminFormElement::text('artikul', 'Артикул'),
-        AdminFormElement::multiselect('categories', 'Категории')->model('Alexspi\Spares\Model\PrsoCategory')->display('name'),
-        AdminFormElement::text('views', 'Просмотры')->readonly(),
-        AdminFormElement::checkbox('show', 'Включен')->defaultValue(true),
+    $model->onDisplay(function () {
+        $display = AdminDisplay::table()->setColumns([
+            AdminColumn::text('name')->setLabel('Название'),
+            AdminColumn::text('price')->setLabel('Цена'),
+            AdminColumn::text('artikul')->setLabel('Артикулs'),
+            AdminColumn::text('number')->setLabel('Оригинальный номер'),
+        ]);
+
+        $display->paginate(15);
+
+        return $display;
+    });
+
+    $model->onCreateAndEdit(function () {
+
+        $form = AdminForm::form()->setItems([
+//            AdminFormElement::text('category_id', 'Category'),
+            AdminFormElement::text('name', 'Товар')->required(),
+            AdminFormElement::text('price', 'Цена'),
+            AdminFormElement::text('slug', 'Ярлык (если не заполнять генерируется автоматически)'),
+            AdminFormElement::text('status', 'Статус'),
+            AdminFormElement::text('artikul', 'Артикул'),
+            AdminFormElement::text('number', 'Номер'),
+            AdminFormElement::multiselect('categories', 'Категории')->setModelForOptions(new PrsoCategory())->setDisplay('name'),
+            AdminFormElement::text('views', 'Просмотры'),
+            AdminFormElement::checkbox('show', 'Включен'),
 //		AdminFormElement::checkbox('complected', 'Complected'),
 //		AdminFormElement::text('complect_id', 'Complect'),
-        AdminFormElement::ckeditor('note', 'Аннотация'),
-        AdminFormElement::ckeditor('description', 'Описание'),
-//        AdminFormElement::multiimages('photos', 'Изображения'),
-    ]);
-    return $form;
-});
+            AdminFormElement::textarea('description', 'Описание'),
+
+        ]);
+        $form->getButtons()
+            ->setSaveButtonText('Сохранить');
+//            ->hideSaveAndCloseButton();
+
+        return $form;
+    });
+}) ;
+
+
+
+
