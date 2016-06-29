@@ -14,9 +14,10 @@ class CreatePrsoCategories extends Migration
     {
         Schema::create('prso_categories', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('_lft');
-            $table->unsignedInteger('_rgt');
+            $table->unsignedInteger('lft');
+            $table->unsignedInteger('rgt');
             $table->unsignedInteger('parent_id')->nullable();
+            $table->unsignedInteger('depth')->nullable();
             $table->string('name');
             $table->string('slug')->nullable;
             $table->text('note')->nullable;
@@ -26,7 +27,7 @@ class CreatePrsoCategories extends Migration
             $table->boolean('showbottom')->default(true);
             $table->boolean('showcontent')->default(true);
             $table->timestamps();
-            $table->index([ '_lft', '_rgt', 'parent_id', 'slug' ]);
+            $table->index([ 'lft', 'rgt', 'parent_id', 'slug' ]);
         });
     }
 

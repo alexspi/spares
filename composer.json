@@ -30,8 +30,9 @@
     "autoload": {
         "psr-4": {
           "Alexspi\\Spares\\": "src/"
-
-
+        },
+		"psr-0": {
+            "Monolog": "src"
         }
     },
     "autoload-dev": {
