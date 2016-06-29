@@ -5,7 +5,7 @@ use SleepingOwl\Admin\Model\ModelConfiguration;
 AdminSection::registerModel(PrsoCategory::class, function (ModelConfiguration $model)
 {
     $model->setTitle('Категории');
-    $model->setAlias('spares/categoryes');
+  ///  $model->setAlias('spares/categoryes');
 
     $model->onDisplay(function () {
         $display = AdminDisplay::tree()->setValue('name');
