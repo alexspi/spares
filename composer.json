@@ -30,6 +30,7 @@
     "autoload": {
         "psr-4": {
           "Alexspi\\Spares\\": "src/"
+          "Alexspi\\Spares\\Http\\Controllers\\": "src/Http/Controllers/"
         },
 
         "psr-0": {
